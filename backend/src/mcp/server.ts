@@ -122,7 +122,7 @@ const MCP_PORT = process.env.MCP_PORT
 
 mcp.start({
   transportType: "httpStream",
-  httpStream: { port: MCP_PORT },
+  httpStream: { port: MCP_PORT, host: "0.0.0.0" },
 });
 
-console.log(`Auxilium MCP server listening on http://localhost:${MCP_PORT}`);
+console.log(`Auxilium MCP server listening on http://0.0.0.0:${MCP_PORT}`);
