@@ -1,0 +1,22 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+
+# Environment variables — NEVER commit this
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS/editor junk
+.DS_Store
+.vscode/
+.idea/
+
+# TypeScript build info
+*.tsbuildinfo
