@@ -7,7 +7,7 @@ import AgentTerminal from "./AgentTerminal";
 
 export default function Hero() {
   return (
-    <section className="relative overflow-hidden px-6 pb-28 pt-44 sm:pt-52">
+    <section className="relative overflow-hidden px-6 pb-28 pt-24 sm:pt-32">
       <div
         aria-hidden
         className="pointer-events-none absolute inset-x-0 top-0 z-10 h-[900px]"
@@ -45,7 +45,7 @@ export default function Hero() {
       <div className="noise-bg absolute inset-0 z-10" />
 
       <div className="mx-auto max-w-3xl text-center">
-        <motion.div
+        {/* <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
@@ -53,7 +53,7 @@ export default function Hero() {
         >
           <span className="h-1.5 w-1.5 rounded-full bg-approved" />
           Built for officer-in-the-loop underwriting
-        </motion.div>
+        </motion.div> */}
 
         <motion.h1
           initial={{ opacity: 0, y: 16 }}
@@ -72,8 +72,7 @@ export default function Hero() {
           transition={{ duration: 0.7, delay: 0.12 }}
           className="mx-auto mt-6 max-w-xl text-balance text-base text-mist sm:text-lg"
         >
-          CreditPilot autonomously scores risk, cross-checks documents, and drafts the credit memo —
-          so loan officers open every file already knowing what matters.
+          Auxilium autonomously scores risk, cross-checks documents, and drafts the credit memo so loan officers open every file already knowing what matters.
         </motion.p>
 
         <motion.div

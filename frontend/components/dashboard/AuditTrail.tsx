@@ -3,29 +3,25 @@
 import { useEffect, useState } from "react";
 import { motion } from "motion/react";
 import clsx from "clsx";
-import { AuditEvent } from "@/lib/types";
+import type { ActivityEvent } from "@/lib/api";
 
 function formatTime(iso: string) {
-  return new Date(iso).toLocaleString("en-US", {
-    month: "short",
-    day: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
+  return new Date(iso).toLocaleString("en-US", { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" });
 }
 
-const actorColor: Record<AuditEvent["actor"], string> = {
-  agent: "text-mist",
-  officer: "text-paper",
-  system: "text-review",
+const typeColor: Record<ActivityEvent["type"], string> = {
+  score: "text-mist",
+  document: "text-review",
+  memo: "text-paper",
 };
 
-/**
- * Reuses the Agent Terminal's visual language (frosted glass, monospace,
- * traffic-light chrome) to replay a specific applicant's actual event
- * timeline rather than a looping script.
- */
-export default function AuditTrail({ events }: { events: AuditEvent[] }) {
+const typeLabel: Record<ActivityEvent["type"], string> = {
+  score: "risk score",
+  document: "document",
+  memo: "credit memo",
+};
+
+export default function AuditTrail({ events }: { events: ActivityEvent[] }) {
   const [visibleCount, setVisibleCount] = useState(0);
 
   useEffect(() => {
@@ -51,25 +47,29 @@ export default function AuditTrail({ events }: { events: AuditEvent[] }) {
         <span className="ml-3 font-mono text-xs text-fog">audit-trail</span>
       </div>
 
-      <div className="scrollbar-thin max-h-[380px] overflow-y-auto px-5 py-5 font-mono text-[13px] leading-7">
-        {events.slice(0, visibleCount).map((e, i) => (
-          <motion.div
-            key={e.id}
-            initial={{ opacity: 0, y: 4 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3 }}
-            className="flex flex-wrap items-baseline gap-x-2"
-          >
-            <span className="text-fog">{formatTime(e.timestamp)}</span>
-            <span className={clsx(actorColor[e.actor])}>[{e.actor}]</span>
-            <span className="text-paper">{e.label}</span>
-            {e.detail && <span className="text-fog">— {e.detail}</span>}
-            {i === visibleCount - 1 && (
-              <span className="inline-block w-[7px] h-[15px] bg-paper/80 ml-0.5 translate-y-[2px] animate-blink" />
-            )}
-          </motion.div>
-        ))}
-      </div>
+      {events.length === 0 ? (
+        <div className="px-5 py-8 text-center font-mono text-xs text-fog">No activity yet for this applicant.</div>
+      ) : (
+        <div className="scrollbar-thin max-h-95 overflow-y-auto px-5 py-5 font-mono text-[13px] leading-7">
+          {events.slice(0, visibleCount).map((e, i) => (
+            <motion.div
+              key={e.id}
+              initial={{ opacity: 0, y: 4 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3 }}
+              className="flex flex-wrap items-baseline gap-x-2"
+            >
+              <span className="text-fog">{formatTime(e.timestamp)}</span>
+              <span className={clsx(typeColor[e.type])}>[{typeLabel[e.type]}]</span>
+              <span className="text-paper">{e.title}</span>
+              <span className="text-fog">— {e.detail}</span>
+              {i === visibleCount - 1 && (
+                <span className="inline-block w-1.75 h-3.75 bg-paper/80 ml-0.5 translate-y-0.5 animate-blink" />
+              )}
+            </motion.div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

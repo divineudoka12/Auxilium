@@ -1,10 +1,11 @@
 import { FastMCP } from "fastmcp";
 import { z } from "zod";
 import { scoreApplicant } from "../services/riskScoring.service";
+import { analyzeDocument } from "../services/documentAnalysis.service";
 import { draftCreditMemo } from "../services/creditMemo.service";
 import { supabase } from "../db/client";
 
-const mcp = new FastMCP({
+export const mcp = new FastMCP({
   name: "Auxilium",
   version: "1.0.0",
 });
@@ -48,7 +49,49 @@ mcp.addTool({
   },
 });
 
-// Credit Memo as an MCP tool too - useful once you register the A2A side.
+mcp.addTool({
+  name: "analyze_document",
+  description:
+    "Analyzes an applicant's uploaded document (base64-encoded PDF) against their claimed " +
+    "application values, extracting key fields and flagging missing fields or inconsistencies.",
+  parameters: z.object({
+    applicant_id: z.string(),
+    document_base64: z.string().describe("Base64-encoded PDF content"),
+  }),
+  execute: async (args) => {
+    const { data: applicant, error: applicantError } = await supabase
+      .from("applicants")
+      .select("*")
+      .eq("id", args.applicant_id)
+      .single();
+
+    if (applicantError || !applicant) {
+      throw new Error("Applicant not found");
+    }
+
+    const fileBuffer = Buffer.from(args.document_base64, "base64");
+
+    const result = await analyzeDocument(args.applicant_id, fileBuffer, {
+      full_name: applicant.full_name,
+      monthly_income: applicant.monthly_income,
+      employment_status: applicant.employment_status,
+    });
+
+    const { error: saveError } = await supabase.from("document_analyses").insert({
+      applicant_id: result.applicant_id,
+      extracted_fields: result.extracted_fields,
+      missing_fields: result.missing_fields,
+      inconsistencies: result.inconsistencies,
+    });
+
+    if (saveError) {
+      throw new Error(`Failed to save document analysis: ${saveError.message}`);
+    }
+
+    return JSON.stringify(result);
+  },
+});
+
 mcp.addTool({
   name: "generate_credit_memo",
   description:
@@ -114,15 +157,17 @@ mcp.addTool({
   },
 });
 
-const MCP_PORT = process.env.MCP_PORT
-  ? Number(process.env.MCP_PORT)
-  : process.env.PORT
-    ? Number(process.env.PORT)
-    : 4100;
+const MCP_PORT = process.env.MCP_PORT ? Number(process.env.MCP_PORT) : 4100;
 
-mcp.start({
-  transportType: "httpStream",
-  httpStream: { port: MCP_PORT, host: "0.0.0.0" },
-});
-
-console.log(`Auxilium MCP server listening on http://0.0.0.0:${MCP_PORT}`);
+/**
+ * Starts FastMCP bound to localhost ONLY — it is never reached directly
+ * from the internet. Express (index.ts) is the sole public entry point
+ * and proxies into this after checking payment.
+ */
+export function startMcpServer() {
+  mcp.start({
+    transportType: "httpStream",
+    httpStream: { port: MCP_PORT, host: "127.0.0.1" },
+  });
+  console.log(`Auxilium MCP server listening internally on http://127.0.0.1:${MCP_PORT}`);
+}

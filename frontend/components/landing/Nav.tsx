@@ -21,9 +21,9 @@ export default function Nav() {
       <div className="glass-strong flex items-center justify-between rounded-full px-5 py-3">
         <Link href="/" className="flex items-center gap-2">
           <span className="grid h-7 w-7 place-items-center rounded-lg bg-paper text-ink font-display font-semibold text-sm">
-            C
+            A
           </span>
-          <span className="font-display text-[15px] font-medium tracking-tight">CreditPilot</span>
+          <span className="font-display text-[15px] font-medium tracking-tight">Auxilium</span>
         </Link>
 
         <nav className="hidden items-center gap-7 md:flex">

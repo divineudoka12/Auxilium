@@ -88,7 +88,7 @@ export function createApplicant(data: {
   credit_score?: number;
   requested_loan_amount: number;
 }): Promise<ScoreResult & { applicant_id: string }> {
-  return request("/score", {
+  return request("/agent/score", {
     method: "POST",
     body: JSON.stringify(data),
   });

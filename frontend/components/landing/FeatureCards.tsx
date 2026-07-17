@@ -9,7 +9,7 @@ const features = [
     icon: Gauge,
     title: "Autonomous Risk Scoring",
     description:
-      "Every applicant is scored against debt-to-income, employment stability, and collateral signals the moment a file is submitted — no queue, no waiting.",
+      "Every applicant is scored against debt-to-income, employment stability, and collateral signals the moment a file is submitted no queue, no waiting.",
   },
   {
     icon: FileSearch,
@@ -21,7 +21,7 @@ const features = [
     icon: UserCheck,
     title: "Officer-in-the-Loop Decisions",
     description:
-      "The agent drafts the memo and recommendation. The officer reviews the reasoning, the evidence, and the audit trail — and makes the final call.",
+      "The agent drafts the memo and recommendation. The officer reviews the reasoning, the evidence, and the audit trail and makes the final call.",
   },
 ];
 

@@ -6,9 +6,9 @@ export default function Footer() {
       <div className="mx-auto flex max-w-5xl flex-col items-center justify-between gap-4 sm:flex-row">
         <div className="flex items-center gap-2">
           <span className="grid h-6 w-6 place-items-center rounded-md bg-paper text-ink font-display text-xs font-semibold">
-            C
+            A
           </span>
-          <span className="text-sm text-mist">CreditPilot © 2026</span>
+          <span className="text-sm text-mist">Auxilium © 2026</span>
         </div>
         <div className="flex items-center gap-6 text-sm text-mist">
           <Link href="/dashboard" className="hover:text-paper transition-colors">

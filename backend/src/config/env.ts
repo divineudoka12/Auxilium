@@ -25,4 +25,5 @@ export const env = {
   okxApiKey: process.env.OKX_API_KEY,
   okxSecretKey: process.env.OKX_SECRET_KEY,
   okxPassphrase: process.env.OKX_PASSPHRASE,
+    agentWalletPrivateKey: process.env.PRIVATE_KEY,
 };
