@@ -4,7 +4,7 @@ import { ExactEvmScheme } from "@okxweb3/x402-evm/exact/server";
 import { OKXFacilitatorClient } from "@okxweb3/x402-core";
 import { env } from "../config/env";
 
-const X_LAYER_NETWORK = "eip155:1952";
+const X_LAYER_NETWORK = "eip155:196";
 
 /**
  * Returns configured x402 payment middleware for the given priced routes,

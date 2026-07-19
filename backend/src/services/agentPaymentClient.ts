@@ -19,7 +19,7 @@ const signer = toClientEvmSigner(account, publicClient);
 export const fetchWithAgentPayment = wrapFetchWithPaymentFromConfig(fetch, {
   schemes: [
     {
-      network: "eip155:1952",
+      network: "eip155:196",
       client: new ExactEvmScheme(signer),
     },
   ],
