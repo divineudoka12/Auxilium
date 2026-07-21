@@ -18,12 +18,9 @@ export const env = {
 
   geminiApiKey: required("GEMINI_API_KEY"),
 
-  // Payment (x402) - optional. If any of these are missing, payment gating
-  // is skipped and routes run unpaid (useful for local dev before you have
-  // an Agentic Wallet / OKX Dev Portal credentials set up).
   payToAddress: process.env.PAY_TO_ADDRESS,
   okxApiKey: process.env.OKX_API_KEY,
   okxSecretKey: process.env.OKX_SECRET_KEY,
   okxPassphrase: process.env.OKX_PASSPHRASE,
-    agentWalletPrivateKey: process.env.PRIVATE_KEY,
+  agentWalletPrivateKey: process.env.PRIVATE_KEY,
 };
